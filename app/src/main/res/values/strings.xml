@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Owlx</string>
+    <string name="quick_login_placeholder">Hey, Sexy</string>
+    <string name="input_login_hint">E-mail</string>
+    <string name="input_password_hint">Senha</string>
+    <string name="login_title">Log-in</string>
+    <string name="nova_conta">Nova Conta</string>
+    <string name="esquecer_senha">Esqueceu sua senha?</string>
+</resources>
