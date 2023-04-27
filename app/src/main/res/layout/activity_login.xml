@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
     android:gravity="center"
-    android:background="@color/light_cyan"
+    android:background="@drawable/bg_start_menus"
     android:padding="48dp"
     >
 
