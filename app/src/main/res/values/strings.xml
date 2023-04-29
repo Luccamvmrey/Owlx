@@ -6,4 +6,8 @@
     <string name="login_title">Log-in</string>
     <string name="nova_conta">Nova Conta</string>
     <string name="esquecer_senha">Esqueceu sua senha?</string>
+    <string name="signin_title">Cadastro</string>
+    <string name="criar_conta">Criar Conta</string>
+    <string name="input_name_hint">Nome</string>
+    <string name="input_date_of_birth_hint">Data de Nascimento</string>
 </resources>

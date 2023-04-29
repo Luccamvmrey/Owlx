@@ -1,5 +1,6 @@
 package com.example.owlx
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -48,11 +49,9 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnCreateAccount?.setOnClickListener {
-            Toast.makeText(
-                this,
-                "Let's create a new account?", Toast.LENGTH_LONG
-            )
-                .show()
+            val intent = Intent(this,  SigninActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         btnForgotPassword?.setOnClickListener {

@@ -12,9 +12,12 @@
         android:theme="@style/Theme.Owlx"
         tools:targetApi="31">
         <activity
+            android:name=".SigninActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false"
-            android:label="Login"/>
+            android:label="Login" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

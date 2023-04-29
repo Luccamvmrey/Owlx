@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
-    android:gravity="center"
-    android:background="@drawable/bg_start_menus"
+    tools:context=".SigninActivity"
     android:padding="48dp"
-    >
+    android:gravity="center"
+    android:background="@drawable/bg_start_menus">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -25,11 +24,30 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/login_title"
+                android:text="@string/signin_title"
                 android:layout_marginStart="16dp"
                 android:layout_marginVertical="8dp"
                 android:textSize="18sp"
                 android:textColor="@color/white"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_name_hint"
+                app:boxBackgroundColor="@color/white"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="8dp"
+                android:textColorHint="@color/dark_cyan">
+
+                <EditText
+                    android:id="@+id/input_signin_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:textColorHighlight="@color/light_pink"
+                    android:textColor="@color/dark_cyan"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -41,7 +59,7 @@
                 android:textColorHint="@color/dark_cyan">
 
                 <EditText
-                    android:id="@+id/input_login"
+                    android:id="@+id/input_signin_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
@@ -53,38 +71,21 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/input_password_hint"
+                android:hint="@string/input_date_of_birth_hint"
                 app:boxBackgroundColor="@color/white"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginVertical="8dp"
                 android:textColorHint="@color/dark_cyan">
 
                 <EditText
-                    android:id="@+id/input_password"
+                    android:id="@+id/input_signin_date_of_birth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
+                    android:inputType="date"
                     android:textColorHighlight="@color/light_pink"
-                    android:textColor="@color/dark_cyan"/>
+                    android:textColor="@color/dark_cyan" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingEnd="16dp"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:id="@+id/btn_esquecer_senha"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/esquecer_senha"
-                    android:textColor="@color/white"
-                    android:gravity="end"/>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,28 +94,13 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal |center_vertical">
-
-                <Button
-                    android:id="@+id/btn_login"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/login_title"
-                    android:textAllCaps="false"
-                    android:textSize="18sp"
-                    android:backgroundTint="@color/light_cyan"
-                    android:textColor="@color/white"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"/>
+                android:gravity="center">
 
                 <Button
                     android:id="@+id/btn_criar_conta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/nova_conta"
+                    android:text="@string/criar_conta"
                     android:textAllCaps="false"
                     android:textSize="18sp"
                     android:backgroundTint="@color/light_cyan"
