@@ -12,7 +12,7 @@ As of 26/04/2023 we have implemented:
 
 - Login Page, where we still have to implement user validation:
 
-![image](https://user-images.githubusercontent.com/104277321/234732789-7d15fb9a-2349-47fa-bb38-172640c08a97.png)
+![image](https://user-images.githubusercontent.com/104277321/234738923-f673b663-9966-4bc3-a59a-f96e9506cd35.png)
 
 To come next:
 - Create New Account Page
