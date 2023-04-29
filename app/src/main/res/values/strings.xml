@@ -10,4 +10,5 @@
     <string name="criar_conta">Criar Conta</string>
     <string name="input_name_hint">Nome</string>
     <string name="input_date_of_birth_hint">Data de Nascimento</string>
+    <string name="input_confirm_password_hint">Confirme a Senha</string>
 </resources>

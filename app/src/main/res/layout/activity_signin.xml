@@ -81,9 +81,47 @@
                     android:id="@+id/input_signin_date_of_birth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="date"
+                    android:inputType="none"
                     android:textColorHighlight="@color/light_pink"
                     android:textColor="@color/dark_cyan" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_password_hint"
+                app:boxBackgroundColor="@color/white"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="8dp"
+                android:textColorHint="@color/dark_cyan">
+
+                <EditText
+                    android:id="@+id/input_signin_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textColorHighlight="@color/light_pink"
+                    android:textColor="@color/dark_cyan"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_confirm_password_hint"
+                app:boxBackgroundColor="@color/white"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="8dp"
+                android:textColorHint="@color/dark_cyan">
+
+                <EditText
+                    android:id="@+id/input_signin_confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textColorHighlight="@color/light_pink"
+                    android:textColor="@color/dark_cyan"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
