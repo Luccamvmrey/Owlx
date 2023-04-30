@@ -1,62 +1,130 @@
 package com.example.owlx
 
-import android.app.DatePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import android.widget.EditText
-import java.util.*
+import android.widget.TextView
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class SigninActivity : AppCompatActivity() {
 
-    private var btnDateOfBirth: EditText? = null
+    //Input variables
+    private var nameInput: EditText? = null
+    private var emailInput: EditText? = null
+    private var passwordInput: EditText? = null
+    private var postRegistrationLogin: TextView? = null
+    private lateinit var btnCreateAccount: Button
+
+    private lateinit var auth: FirebaseAuth
+
+    public override fun onStart() {
+        super.onStart()
+        //Checks if user is logged in, if they are, redirects them to home page
+        val currentUser = auth.currentUser
+        if(currentUser != null){
+            val intent = Intent(this, HomePageActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signin)
 
-        btnDateOfBirth = findViewById(R.id.input_signin_date_of_birth)
+        //User authentication
+        //Initializes Firebase instance
+        auth = Firebase.auth
 
-        //Prevents keyboard from being displayed.
-        btnDateOfBirth?.showSoftInputOnFocus = false
+        //Initializes variables
+        btnCreateAccount = findViewById(R.id.btn_criar_conta)
 
-        btnDateOfBirth?.setOnClickListener {
-            clickDatePicker()
+        btnCreateAccount.setOnClickListener {
+            createAccount()
         }
-
-        //TODO: User validation, same shit as before, just do it
     }
 
-    private fun clickDatePicker() {
-        val cal = Calendar.getInstance()
-        val year = cal.get(Calendar.YEAR)
-        val month = cal.get(Calendar.MONTH)
-        val day = cal.get(Calendar.DAY_OF_MONTH)
+    //Sign-In Functions
+    private fun createAccount() {
+        //Fields required for firebase authentication
+        emailInput = findViewById(R.id.input_signin_email)
+        passwordInput = findViewById(R.id.input_signin_password)
 
-        val dpd = DatePickerDialog(this,
-            { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+        //Extra fields
+        nameInput = findViewById(R.id.input_signin_name)
 
-                val formattedDay: String = if (selectedDayOfMonth < 10) {
-                    "0$selectedDayOfMonth"
+        //Other variables
+        postRegistrationLogin = findViewById(R.id.login_registro)
+
+        val email: String = emailInput?.text.toString()
+        val password: String = passwordInput?.text.toString()
+        val name: String = nameInput?.text.toString()
+
+        //Checks if e-mail, password or name fields are empty
+        if (email.isEmpty()) {
+            Toast.makeText(
+                this,
+                "Por favor, insira um e-mail!", Toast.LENGTH_LONG
+            )
+                .show()
+
+            return
+        }
+
+        if (password.isEmpty()) {
+            Toast.makeText(
+                this,
+                "Por favor, insira uma senha!", Toast.LENGTH_LONG
+            )
+                .show()
+
+            return
+        }
+
+        if (name.isEmpty()) {
+            Toast.makeText(
+                this,
+                "Por favor, insira seu nome!", Toast.LENGTH_LONG
+            )
+                .show()
+
+            return
+        }
+
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, displays a message to the user
+                    Toast.makeText(
+                        this,
+                        "Cadastro concluído com sucesso.", Toast.LENGTH_SHORT
+                    )
+                        .show()
+
+                    //Makes TextView visible after registration was completed
+                    postRegistrationLogin?.visibility = View.VISIBLE
+
+                    //Takes user back to login page after click
+                    postRegistrationLogin?.setOnClickListener {
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+
                 } else {
-                    "$selectedDayOfMonth"
+                    // If sign in fails, displays a message to the user.
+                    Toast.makeText(
+                        this,
+                        "Falha no cadastro.", Toast.LENGTH_SHORT
+                    )
+                        .show()
                 }
-
-                val formattedMonth: String = if (selectedMonth < 10) {
-                    "0${selectedMonth + 1}"
-                } else {
-                    "${selectedMonth + 1}"
-                }
-
-                val selectedDate = "$formattedDay/$formattedMonth/$selectedYear"
-
-                btnDateOfBirth?.setText(selectedDate)
-            },
-            year,
-            month,
-            day
-        )
-
-        dpd.datePicker.maxDate = System.currentTimeMillis() - 86400000
-        dpd.show()
+            }
     }
 }

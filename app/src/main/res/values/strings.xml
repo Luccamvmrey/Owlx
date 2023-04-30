@@ -9,6 +9,7 @@
     <string name="signin_title">Cadastro</string>
     <string name="criar_conta">Criar Conta</string>
     <string name="input_name_hint">Nome</string>
-    <string name="input_date_of_birth_hint">Data de Nascimento</string>
-    <string name="input_confirm_password_hint">Confirme a Senha</string>
+    <string name="fazer_login">Fazer login</string>
+    <string name="you_made_it_through_TEST">You made it through! You must be a really good hacker.</string>
+    <string name="logout_TEST">Logout</string>
 </resources>

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SigninActivity"
+    android:orientation="vertical"
     android:padding="48dp"
     android:gravity="center"
     android:background="@drawable/bg_start_menus">
@@ -71,25 +72,6 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/input_date_of_birth_hint"
-                app:boxBackgroundColor="@color/white"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="8dp"
-                android:textColorHint="@color/dark_cyan">
-
-                <EditText
-                    android:id="@+id/input_signin_date_of_birth"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:textColorHighlight="@color/light_pink"
-                    android:textColor="@color/dark_cyan" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:hint="@string/input_password_hint"
                 app:boxBackgroundColor="@color/white"
                 android:layout_marginHorizontal="16dp"
@@ -98,25 +80,6 @@
 
                 <EditText
                     android:id="@+id/input_signin_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:textColorHighlight="@color/light_pink"
-                    android:textColor="@color/dark_cyan"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/input_confirm_password_hint"
-                app:boxBackgroundColor="@color/white"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="8dp"
-                android:textColorHint="@color/dark_cyan">
-
-                <EditText
-                    android:id="@+id/input_signin_confirm_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -149,5 +112,15 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/login_registro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fazer_login"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone"/>
 
 </LinearLayout>
