@@ -14,4 +14,13 @@
     <string name="forgot_password_title">Recuperação de Senha</string>
     <string name="recuperar">Recuperar</string>
     <string name="forgot_password_message">Insira seu e-mail e te enviaremos uma mensagem para alteração de sua senha</string>
+    <string name="home">Home</string>
+    <string name="perfil">Minha Conta</string>
+    <string name="options">Opções</string>
+    <string name="user_item_menu">Usuário</string>
+    <string name="log_out">log-out</string>
+    <string name="communication_item_menu">Comunicação</string>
+    <string name="mensagens">Mensagens</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.owlx
+package com.example.owlx.login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,8 +8,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.example.owlx.HomePageActivity
+import com.example.owlx.R
+import com.example.owlx.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class SigninActivity : AppCompatActivity() {
@@ -21,6 +25,7 @@ class SigninActivity : AppCompatActivity() {
     private var postRegistrationLogin: TextView? = null
     private lateinit var btnCreateAccount: Button
 
+    //Firebase
     private lateinit var auth: FirebaseAuth
 
     public override fun onStart() {
@@ -38,6 +43,8 @@ class SigninActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signin)
 
+        supportActionBar?.hide()
+
         //User authentication
         //Initializes Firebase instance
         auth = Firebase.auth
@@ -52,6 +59,9 @@ class SigninActivity : AppCompatActivity() {
 
     //Sign-In Functions
     private fun createAccount() {
+        //Initializes Firestore instance
+        val db = Firebase.firestore
+
         //Fields required for firebase authentication
         emailInput = findViewById(R.id.input_signin_email)
         passwordInput = findViewById(R.id.input_signin_password)
@@ -97,6 +107,12 @@ class SigninActivity : AppCompatActivity() {
             return
         }
 
+        //Adds user to database
+        val user = User(name, email)
+        db.collection("users")
+            .add(user.toHashMap())
+
+        //Creates user using default firebase method
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {

@@ -3,7 +3,12 @@ package com.example.owlx
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
+import com.example.owlx.login.LoginActivity
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -11,22 +16,50 @@ import com.google.firebase.ktx.Firebase
 
 class HomePageActivity : AppCompatActivity() {
 
-    private lateinit var logoutBtn: Button
     private lateinit var auth: FirebaseAuth
     private lateinit var user: FirebaseUser
+
+    private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val navView: NavigationView = findViewById(R.id.nav_view)
+
+        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Home"
+
+        navView.setNavigationItemSelectedListener {
+
+            when (it.itemId) {
+                //This will all be replaced eventually
+                //TODO: Link nav options to their correct stuff
+                R.id.nav_home -> Toast.makeText(applicationContext, "Home clicked", Toast.LENGTH_SHORT).show()
+                R.id.nav_settings -> Toast.makeText(applicationContext, "Settings clicked", Toast.LENGTH_SHORT).show()
+                R.id.nav_profile -> Toast.makeText(applicationContext, "Profile clicked", Toast.LENGTH_SHORT).show()
+                R.id.nav_logout -> logoutUser()
+                R.id.nav_message -> Toast.makeText(applicationContext, "Messages clicked", Toast.LENGTH_SHORT).show()
+            }
+
+            true
+        }
+
         auth = Firebase.auth
         user = auth.currentUser!!
+    }
 
-        logoutBtn = findViewById(R.id.btn_logout)
-
-        logoutBtn.setOnClickListener {
-            logoutUser()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
         }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun logoutUser() {
