@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Owlx</string>
-    <string name="quick_login_placeholder">Hey, Sexy</string>
     <string name="input_login_hint">E-mail</string>
     <string name="input_password_hint">Senha</string>
     <string name="login_title">Log-in</string>
@@ -12,4 +11,7 @@
     <string name="fazer_login">Fazer login</string>
     <string name="you_made_it_through_TEST">You made it through! You must be a really good hacker.</string>
     <string name="logout_TEST">Logout</string>
+    <string name="forgot_password_title">Recuperação de Senha</string>
+    <string name="recuperar">Recuperar</string>
+    <string name="forgot_password_message">Insira seu e-mail e te enviaremos uma mensagem para alteração de sua senha</string>
 </resources>

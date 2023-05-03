@@ -55,14 +55,10 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
-        //TODO: Forget Password logic. Do it sometime later!
         //Forgot password Button/TextView logic
         btnForgotPassword.setOnClickListener {
-            Toast.makeText(
-                this,
-                "You forgot your password? How could you??", Toast.LENGTH_LONG
-            )
-                .show()
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -71,8 +67,8 @@ class LoginActivity : AppCompatActivity() {
         emailInput = findViewById(R.id.input_login)
         passwordInput = findViewById(R.id.input_password)
 
-        val email: String = emailInput?.text.toString()
-        val password: String = passwordInput?.text.toString()
+        val email: String = emailInput?.text.toString().trim { it <= ' '}
+        val password: String = passwordInput?.text.toString().trim { it <= ' '}
 
         //Checks if e-mail or password fields are empty
         if (email.isEmpty()) {
@@ -98,12 +94,6 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, displays a message to the user.
-                    Toast.makeText(this,
-                        "Login feito com sucesso.", Toast.LENGTH_SHORT
-                    )
-                        .show()
-
                     //Redirects user to home page
                     val intent = Intent(this, HomePageActivity::class.java)
                     startActivity(intent)

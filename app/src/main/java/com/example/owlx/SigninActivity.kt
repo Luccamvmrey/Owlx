@@ -62,9 +62,9 @@ class SigninActivity : AppCompatActivity() {
         //Other variables
         postRegistrationLogin = findViewById(R.id.login_registro)
 
-        val email: String = emailInput?.text.toString()
-        val password: String = passwordInput?.text.toString()
-        val name: String = nameInput?.text.toString()
+        val email: String = emailInput?.text.toString().trim { it <= ' '}
+        val password: String = passwordInput?.text.toString().trim { it <= ' '}
+        val name: String = nameInput?.text.toString().trim { it <= ' '}
 
         //Checks if e-mail, password or name fields are empty
         if (email.isEmpty()) {

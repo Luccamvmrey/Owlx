@@ -10,4 +10,5 @@
     <color name="dark_cyan">#0B697D</color>
     <color name="light_cyan">#1E8399</color>
     <color name="light_pink">#ED8F8F</color>
+    <color name="light_grey">#D3D3D3</color>
 </resources>
