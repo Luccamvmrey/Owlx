@@ -77,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
         //Checks if e-mail or password fields are empty
         if (email.isEmpty()) {
             Toast.makeText(
-                this,
+                applicationContext,
                 "Por favor, insira um e-mail!", Toast.LENGTH_LONG
             )
                 .show()
@@ -87,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
 
         if (password.isEmpty()) {
             Toast.makeText(
-                this,
+                applicationContext,
                 "Por favor, insira uma senha!", Toast.LENGTH_LONG
             )
                 .show()

@@ -23,4 +23,9 @@
     <string name="mensagens">Mensagens</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="submit">submit</string>
+    <string name="distancia_TEST">Distância</string>
+    <string name="description">Descrição</string>
+    <string name="price">Preço</string>
+    <string name="add_product">Anunciar Produto</string>
 </resources>

@@ -8,21 +8,24 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.owlx.login.LoginActivity
-import com.example.owlx.models.User
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class UserPageActivity : AppCompatActivity() {
+class AddProductActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var user: FirebaseUser
 
     private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_page)
+        setContentView(R.layout.activity_add_product)
 
+        //Drawer logic
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
 
@@ -31,7 +34,7 @@ class UserPageActivity : AppCompatActivity() {
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Minha Conta"
+        supportActionBar?.title = "Adicionar Produto"
 
         navView.setNavigationItemSelectedListener {
 
@@ -39,7 +42,7 @@ class UserPageActivity : AppCompatActivity() {
                 //This will all be replaced eventually
                 R.id.nav_home -> getHomePage()
                 R.id.nav_settings -> Toast.makeText(applicationContext, "Settings clicked", Toast.LENGTH_SHORT).show()
-                R.id.nav_profile -> Toast.makeText(applicationContext, "Você já está nessa página", Toast.LENGTH_SHORT).show()
+                R.id.nav_profile -> getProfilePage()
                 R.id.nav_logout -> logoutUser()
                 R.id.nav_message -> Toast.makeText(applicationContext, "Messages clicked", Toast.LENGTH_SHORT).show()
             }
@@ -47,28 +50,8 @@ class UserPageActivity : AppCompatActivity() {
             true
         }
 
-        populateData()
-    }
-
-    private fun populateData() {
-        //Initializes Firestore instance
-        val db = Firebase.firestore
-
-        //TODO: FIX THIS
-
-        //Gets current user, gets user from users collection using email
-        val userAuth = Firebase.auth.currentUser
-        val usersRef = db.collection("users")
-        var user: List<User>? = null
-
-        usersRef
-            .whereEqualTo("email", userAuth?.email.toString())
-            .get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    user = document.toObjects(User::class.java)
-                }
-            }
+        auth = Firebase.auth
+        user = auth.currentUser!!
     }
 
     //Drawer Functions
@@ -86,6 +69,12 @@ class UserPageActivity : AppCompatActivity() {
 
         //Redirects to login page
         val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun getProfilePage() {
+        val intent = Intent(this, UserPageActivity::class.java)
         startActivity(intent)
         finish()
     }

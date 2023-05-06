@@ -108,9 +108,8 @@ class SigninActivity : AppCompatActivity() {
         }
 
         //Adds user to database
-        val user = User(name, email)
         db.collection("users")
-            .add(user.toHashMap())
+            .add(User(name, email))
 
         //Creates user using default firebase method
         auth.createUserWithEmailAndPassword(email, password)
