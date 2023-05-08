@@ -107,9 +107,8 @@ class SigninActivity : AppCompatActivity() {
             return
         }
 
-        //Adds user to database
-        db.collection("users")
-            .add(User(name, email))
+
+
 
         //Creates user using default firebase method
         auth.createUserWithEmailAndPassword(email, password)
@@ -121,6 +120,10 @@ class SigninActivity : AppCompatActivity() {
                         "Cadastro concluído com sucesso.", Toast.LENGTH_SHORT
                     )
                         .show()
+
+                    //Adds user to database
+                    db.collection("users")
+                        .add(User(name, email))
 
                     //Makes TextView visible after registration was completed
                     postRegistrationLogin?.visibility = View.VISIBLE
