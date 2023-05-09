@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
@@ -18,6 +19,9 @@ import com.google.firebase.ktx.Firebase
 class UserPageActivity : AppCompatActivity() {
 
     private lateinit var toggle: ActionBarDrawerToggle
+
+    private var tvGreetings: TextView? = null
+    private var tvEmail: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,19 +58,24 @@ class UserPageActivity : AppCompatActivity() {
         //Initializes Firestore instance
         val db = Firebase.firestore
 
-        //TODO: FIX THIS
+        //Gets TextView
+        tvGreetings = findViewById(R.id.tv_greetings)
+        tvEmail = findViewById(R.id.tv_email)
 
         //Gets current user, gets user from users collection using email
         val userAuth = Firebase.auth.currentUser
         val usersRef = db.collection("users")
-        var user: List<User>? = null
 
         usersRef
             .whereEqualTo("email", userAuth?.email.toString())
             .get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    user = document.toObjects(User::class.java)
+            .addOnSuccessListener { sp ->
+                sp?.forEach { doc ->
+                    val user = doc.toObject(User::class.java)
+                    val greetingText = getString(R.string.welcome, user.name)
+
+                    tvGreetings?.text = greetingText
+                    tvEmail?.text = user.email
                 }
             }
     }
