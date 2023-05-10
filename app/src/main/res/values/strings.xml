@@ -29,4 +29,5 @@
     <string name="add_product">Anunciar Produto</string>
     <string name="select_image">Selecionar imagem</string>
     <string name="welcome">Bem-vindo, %1$s!</string>
+    <string name="bem_vindo">Bem-vindo!</string>
 </resources>

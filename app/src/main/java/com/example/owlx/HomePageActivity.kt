@@ -65,7 +65,6 @@ class HomePageActivity : AppCompatActivity() {
     private fun getAddProductPage() {
         val intent = Intent(this, AddProductActivity::class.java)
         startActivity(intent)
-        finish()
     }
 
     //Drawer Functions
@@ -90,6 +89,5 @@ class HomePageActivity : AppCompatActivity() {
     private fun getProfilePage() {
         val intent = Intent(this, UserPageActivity::class.java)
         startActivity(intent)
-        finish()
     }
 }

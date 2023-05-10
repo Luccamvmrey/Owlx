@@ -6,15 +6,10 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.drawerlayout.widget.DrawerLayout
-import com.example.owlx.login.LoginActivity
 import com.example.owlx.models.Product
-import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -39,12 +34,18 @@ class AddProductActivity : AppCompatActivity() {
     private val auth: FirebaseAuth = Firebase.auth
     private lateinit var user: FirebaseUser
 
-    //Drawer
-    private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var backBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_product)
+
+        supportActionBar?.hide()
+
+        backBtn = findViewById(R.id.back_btn)
+        backBtn.setOnClickListener {
+            finish()
+        }
 
         //Initializes variables
         //Add product input
@@ -68,34 +69,6 @@ class AddProductActivity : AppCompatActivity() {
 
         tvSelectImage.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
-
-        //Product data upload
-
-
-        //Drawer logic
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-
-        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Adicionar Produto"
-
-        navView.setNavigationItemSelectedListener {
-
-            when (it.itemId) {
-                //This will all be replaced eventually
-                R.id.nav_home -> getHomePage()
-                R.id.nav_settings -> Toast.makeText(applicationContext, "Settings clicked", Toast.LENGTH_SHORT).show()
-                R.id.nav_profile -> getProfilePage()
-                R.id.nav_logout -> logoutUser()
-                R.id.nav_message -> Toast.makeText(applicationContext, "Messages clicked", Toast.LENGTH_SHORT).show()
-            }
-
-            true
         }
 
         user = auth.currentUser!!
@@ -180,36 +153,5 @@ class AddProductActivity : AppCompatActivity() {
 
             }
         }
-    }
-
-    //Drawer Functions
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun logoutUser() {
-        //Logs user out
-        FirebaseAuth.getInstance().signOut()
-
-        //Redirects to login page
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun getProfilePage() {
-        val intent = Intent(this, UserPageActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun getHomePage() {
-        val intent = Intent(this, HomePageActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 }
