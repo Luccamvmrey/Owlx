@@ -9,7 +9,7 @@ import android.util.Log
 import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.owlx.models.Product
+import com.example.owlx.models.product.Product
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -112,6 +112,7 @@ class AddProductActivity : AppCompatActivity() {
             Log.d(TAG, "Image uploaded successfully")
         }
 
+        //Sorry for the callback hell, I still do not know how to fix this
         //Gets image url
         uploadTask.continueWithTask { task ->
             if (!task.isSuccessful) {

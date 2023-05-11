@@ -30,4 +30,6 @@
     <string name="select_image">Selecionar imagem</string>
     <string name="welcome">Bem-vindo, %1$s!</string>
     <string name="bem_vindo">Bem-vindo!</string>
+    <string name="needs">Este app precisa da sua localização para funcionar corretamente!</string>
+    <string name="localization">Longitude: %1$s,\nLatitude: %2$s.</string>
 </resources>

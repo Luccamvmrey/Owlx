@@ -1,4 +1,4 @@
-package com.example.owlx.models
+package com.example.owlx.models.product
 
 import android.net.Uri
 

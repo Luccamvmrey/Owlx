@@ -10,7 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.owlx.HomePageActivity
 import com.example.owlx.R
-import com.example.owlx.models.User
+import com.example.owlx.models.user.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -72,7 +72,7 @@ class SigninActivity : AppCompatActivity() {
         //Other variables
         postRegistrationLogin = findViewById(R.id.login_registro)
 
-        val email: String = emailInput?.text.toString().trim { it <= ' '}
+        val email: String = emailInput?.text.toString().trim { it <= ' '}.lowercase()
         val password: String = passwordInput?.text.toString().trim { it <= ' '}
         val name: String = nameInput?.text.toString().trim { it <= ' '}
 
