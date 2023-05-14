@@ -7,18 +7,25 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.owlx.adapters.ItemAdapter
 import com.example.owlx.login.LoginActivity
+import com.example.owlx.models.product.Product
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class HomePageActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var user: FirebaseUser
+    private var auth: FirebaseAuth = Firebase.auth
+    private var user: FirebaseUser = auth.currentUser!!
+
+    private val db = Firebase.firestore
 
     private lateinit var toggle: ActionBarDrawerToggle
 
@@ -26,11 +33,26 @@ class HomePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
+
+
         //Floating Button
         val fab: FloatingActionButton = findViewById(R.id.fab)
 
         fab.setOnClickListener {
             getAddProductPage()
+        }
+
+        //Show products
+        getProductList { prodList ->
+            //Set the LayoutManager that this RecyclerView will use.
+            val recyclerViewItems: RecyclerView = findViewById(R.id.recycler_view_items)
+            recyclerViewItems.layoutManager = LinearLayoutManager(this)
+
+            //Initializes Adapter class, passes prodList as parameter
+            val itemAdapter = ItemAdapter(this, prodList)
+
+            //Inflates items
+            recyclerViewItems.adapter = itemAdapter
         }
 
         //Drawer logic
@@ -57,11 +79,39 @@ class HomePageActivity : AppCompatActivity() {
 
             true
         }
-
-        auth = Firebase.auth
-        user = auth.currentUser!!
     }
 
+    //Get products
+    private fun getProductList(callback: (prodList: ArrayList<Product>) -> Unit) {
+        val productList = ArrayList<Product>()
+
+        val usersRef = db.collection("users")
+
+        db.collection("products")
+            .get()
+            .addOnSuccessListener { result ->
+
+                usersRef
+                    .whereEqualTo("email", user.email.toString())
+                    .get()
+                    .addOnSuccessListener { sp ->
+                        sp.forEach { user ->
+                            val userID = user.id
+
+                            //Filters products
+                            for (doc in result) {
+                                if (doc.data["userId"].toString() != userID) {
+                                    productList.add(doc.toObject(Product::class.java))
+                                }
+                            }
+
+                            callback(productList)
+                        }
+                    }
+            }
+    }
+
+    //Add product page
     private fun getAddProductPage() {
         val intent = Intent(this, AddProductActivity::class.java)
         startActivity(intent)

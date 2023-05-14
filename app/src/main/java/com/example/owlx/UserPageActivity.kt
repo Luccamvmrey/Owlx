@@ -120,6 +120,11 @@ class UserPageActivity : AppCompatActivity() {
                                 tvLocalWarning.text = coordinatesText
                                 addLocationBtn.visibility = View.GONE
                             }
+
+                            Toast.makeText(this,
+                            "Localização obtida com sucesso!", Toast.LENGTH_SHORT
+                            )
+                                .show()
                         }
                 }
                 .addOnFailureListener {

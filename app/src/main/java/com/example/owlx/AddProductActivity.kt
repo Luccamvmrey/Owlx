@@ -135,7 +135,7 @@ class AddProductActivity : AppCompatActivity() {
                                 val userId = doc.id
 
                                 db.collection("products")
-                                    .add(Product(name, price, description, userId, downloadUri))
+                                    .add(Product(name, price, description, userId, downloadUri.toString()))
                                     .addOnSuccessListener {
                                         Toast.makeText(
                                             this,

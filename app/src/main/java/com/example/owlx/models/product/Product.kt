@@ -7,5 +7,5 @@ data class Product(
     var price: Double? = null,
     var description: String? = null,
     var userId: String? = null,
-    var imageUri: Uri? = null,
+    var imageUri: String? = null,
 )
