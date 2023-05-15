@@ -1,18 +1,13 @@
 package com.example.owlx
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.owlx.models.product.Product
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
+import com.example.owlx.firebaseUtil.addProductToDatabase
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -31,8 +26,6 @@ class AddProductActivity : AppCompatActivity() {
     private lateinit var ivSelectImage: ImageView
 
     //Firebase
-    private val auth: FirebaseAuth = Firebase.auth
-    private lateinit var user: FirebaseUser
 
     private lateinit var backBtn: Button
 
@@ -70,8 +63,6 @@ class AddProductActivity : AppCompatActivity() {
         tvSelectImage.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-
-        user = auth.currentUser!!
     }
 
     //Add Product Function
@@ -81,7 +72,6 @@ class AddProductActivity : AppCompatActivity() {
         val storage: FirebaseStorage = Firebase.storage
 
         //Required fields
-        user = auth.currentUser!!
         nameInput = findViewById(R.id.input_name_product)
         priceInput = findViewById(R.id.input_price_product)
         descriptionInput = findViewById(R.id.input_description_product)
@@ -101,58 +91,16 @@ class AddProductActivity : AppCompatActivity() {
             return
         }
 
-        //Image Uri upload
-        val storageRef = storage.reference
+        addProductToDatabase(db, storage, name, price, description, imageUri) {
+            Toast.makeText(
+                    this,
+                    "Produto criado com sucesso, redirecionando para página inicial", Toast.LENGTH_LONG
+                )
+                    .show()
 
-        //Uploads image
-        val productImageRef = storageRef.child("images/${imageUri.lastPathSegment}")
-        val uploadTask = productImageRef.putFile(imageUri)
-
-        uploadTask.addOnSuccessListener {
-            Log.d(TAG, "Image uploaded successfully")
-        }
-
-        //Sorry for the callback hell, I still do not know how to fix this
-        //Gets image url
-        uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) {
-                task.exception?.let {
-                    throw it
-                }
-            }
-            productImageRef.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val downloadUri = task.result
-
-                //Gets userID, stores product in Firestore
-                val usersRef = db.collection("users")
-                usersRef
-                    .whereEqualTo("email", user.email.toString())
-                    .get().addOnSuccessListener { sp ->
-                        sp?.forEach { doc ->
-                            if (doc != null) {
-                                val userId = doc.id
-
-                                db.collection("products")
-                                    .add(Product(name, price, description, userId, downloadUri.toString()))
-                                    .addOnSuccessListener {
-                                        Toast.makeText(
-                                            this,
-                                            "Produto criado com sucesso, redirecionando para página inicial", Toast.LENGTH_LONG
-                                        )
-                                            .show()
-
-                                        val intent = Intent(this, HomePageActivity::class.java)
-                                        startActivity(intent)
-                                        finish()
-                                    }
-                            }
-                        }
-                    }
-
-
-            }
+                val intent = Intent(this, HomePageActivity::class.java)
+                startActivity(intent)
+                finish()
         }
     }
 }

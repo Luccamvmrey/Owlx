@@ -10,10 +10,9 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.owlx.R
 import com.example.owlx.models.product.Product
-import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class ItemAdapter(val context: Context, val items: ArrayList<Product>):
+class ItemAdapter(private val context: Context, private val items: ArrayList<Product>):
     RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -47,7 +46,7 @@ class ItemAdapter(val context: Context, val items: ArrayList<Product>):
 
         holder.tvProductName.text = item.name
         holder.tvProductPrice.text = item.price.toString()
-        Picasso.get().load(item.imageUri).into(holder.ivProductImage)
+        Picasso.get().load(item.imageUri).rotate(90.0F).into(holder.ivProductImage)
 
     }
 

@@ -11,11 +11,11 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.example.owlx.firebaseUtil.getUserFromLoggedUser
+import com.example.owlx.firebaseUtil.getUserRefFromUserId
 import com.example.owlx.models.user.Coordinates
-import com.example.owlx.models.user.User
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -46,8 +46,6 @@ class UserPageActivity : AppCompatActivity() {
             finish()
         }
 
-        var userId: String? = null
-
         //Populates data and modifies TextView based on user coordinates
         //Initializes views
         tvGreetings = findViewById(R.id.tv_greetings)
@@ -56,34 +54,21 @@ class UserPageActivity : AppCompatActivity() {
         addLocationBtn = findViewById(R.id.location_btn)
 
         //Gets current user, gets user from users collection using email
-        val userAuth = Firebase.auth.currentUser
-        val usersRef = db.collection("users")
-        var user: User? = null
+        getUserFromLoggedUser(db) { user, _ ->
+            val greetingText = getString(R.string.welcome, user.name)
 
+            tvGreetings.text = greetingText
+            tvEmail.text = user.email
 
-        usersRef
-            .whereEqualTo("email", userAuth?.email.toString())
-            .get()
-            .addOnSuccessListener { sp ->
-                sp?.forEach { doc ->
-                    userId = doc.id
-                    user = doc.toObject(User::class.java)
-                    val greetingText = getString(R.string.welcome, user!!.name)
+            if (user.coordinates != null) {
+                val coordinatesText = getString(R.string.localization,
+                    user.coordinates!!.longitude.toString(),
+                    user.coordinates!!.latitude.toString())
 
-                    tvGreetings.text = greetingText
-                    tvEmail.text = user!!.email
-
-                    if (user!!.coordinates != null) {
-                        val coordinatesText = getString(R.string.localization,
-                            user!!.coordinates!!.longitude.toString(),
-                            user!!.coordinates!!.latitude.toString())
-
-
-                        tvLocalWarning.text = coordinatesText
-                        addLocationBtn.visibility = View.GONE
-                    }
-                }
+                tvLocalWarning.text = coordinatesText
+                addLocationBtn.visibility = View.GONE
             }
+        }
 
         //Location Logic
         addLocationBtn.setOnClickListener {
@@ -107,25 +92,22 @@ class UserPageActivity : AppCompatActivity() {
 
                     Log.d(TAG, "Coordinates: $coordinates")
 
-                    val userRef = db.collection("users").document(userId!!)
-                    userRef
-                        .update("coordinates", coordinates)
-                        .addOnSuccessListener {
-                            if (user!!.coordinates != null) {
-                                val coordinatesText = getString(R.string.localization,
-                                    user!!.coordinates!!.longitude.toString(),
-                                    user!!.coordinates!!.latitude.toString())
+                    getUserRefFromUserId(db) { user ,userRef ->
+                        userRef
+                            .update("coordinates", coordinates)
+                            .addOnSuccessListener {
+                                if (user.coordinates != null) {
 
+                                    //Refreshes activity
+                                    recreate()
+                                }
 
-                                tvLocalWarning.text = coordinatesText
-                                addLocationBtn.visibility = View.GONE
+                                Toast.makeText(this,
+                                    "Localização obtida com sucesso!", Toast.LENGTH_SHORT
+                                )
+                                    .show()
                             }
-
-                            Toast.makeText(this,
-                            "Localização obtida com sucesso!", Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        }
+                    }
                 }
                 .addOnFailureListener {
                     Toast.makeText(this,
@@ -133,8 +115,6 @@ class UserPageActivity : AppCompatActivity() {
                     )
                         .show()
                 }
-
-            Log.d(TAG, "This is the UserID: $userId")
         }
     }
 }
