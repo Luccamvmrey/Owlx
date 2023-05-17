@@ -1,6 +1,12 @@
 package com.example.owlx.firebaseUtil
 
+import android.content.ContentResolver
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import androidx.annotation.RequiresApi
 import com.example.owlx.models.product.Product
 import com.example.owlx.models.user.User
 import com.google.firebase.auth.ktx.auth
@@ -8,6 +14,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
 
 private val userAuth = Firebase.auth.currentUser
 
@@ -45,10 +52,27 @@ fun getUserObjectFromUserId(db: FirebaseFirestore, userId: String, callback: (us
         }
 }
 
-fun getUriFromUploadedImage(imageUri: Uri, storage: FirebaseStorage, callback: (downloadUri: Uri) -> Unit) {
+@RequiresApi(Build.VERSION_CODES.P)
+fun getUriFromUploadedImage(imageUri: Uri, storage: FirebaseStorage, contentResolver: ContentResolver, callback: (downloadUri: Uri) -> Unit) {
     val storageRef = storage.reference
-    val productImageRef = storageRef.child("images/${imageUri.lastPathSegment}")
-    val uploadTask = productImageRef.putFile(imageUri)
+
+    val timestamp = System.currentTimeMillis().toString()
+    val productImageRef = storageRef.child("images/$timestamp")
+    @Suppress("DEPRECATION") val bitmap = when {
+        //If found SDK if a version less than 28, use this method to get Bitmap
+        Build.VERSION.SDK_INT < 28 -> MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+        else -> {
+            //Otherwise use this
+            val source = ImageDecoder.createSource(contentResolver, imageUri)
+            ImageDecoder.decodeBitmap(source)
+        }
+    }
+    val baos = ByteArrayOutputStream()
+
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+
+    val fileInBytes = baos.toByteArray()
+    val uploadTask = productImageRef.putBytes(fileInBytes)
 
     uploadTask
         .continueWithTask { task ->
@@ -67,9 +91,10 @@ fun getUriFromUploadedImage(imageUri: Uri, storage: FirebaseStorage, callback: (
 }
 
 //Slightly better callback hell, you're welcome
-fun addProductToDatabase(db: FirebaseFirestore, storage: FirebaseStorage, name: String, price: Double,
+@RequiresApi(Build.VERSION_CODES.P)
+fun addProductToDatabase(db: FirebaseFirestore, storage: FirebaseStorage, contentResolver: ContentResolver, name: String, price: Double,
                          description: String, imageUri: Uri, callback: () -> Unit) {
-    getUriFromUploadedImage(imageUri, storage) { downloadUri ->
+    getUriFromUploadedImage(imageUri, storage, contentResolver) { downloadUri ->
         getUserFromLoggedUser(db) { _, userId ->
             db.collection("products")
                 .add(Product(name, price, description, userId, downloadUri.toString()))

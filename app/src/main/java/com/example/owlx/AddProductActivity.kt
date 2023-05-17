@@ -2,11 +2,13 @@ package com.example.owlx
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import com.example.owlx.firebaseUtil.addProductToDatabase
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -29,6 +31,7 @@ class AddProductActivity : AppCompatActivity() {
 
     private lateinit var backBtn: Button
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_product)
@@ -66,6 +69,7 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     //Add Product Function
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun addProduct(imageUri: Uri?) {
         //Initializes firestore and storage instances
         val db = Firebase.firestore
@@ -91,7 +95,7 @@ class AddProductActivity : AppCompatActivity() {
             return
         }
 
-        addProductToDatabase(db, storage, name, price, description, imageUri) {
+        addProductToDatabase(db, storage, this.contentResolver, name, price, description, imageUri) {
             Toast.makeText(
                     this,
                     "Produto criado com sucesso, redirecionando para página inicial", Toast.LENGTH_LONG
