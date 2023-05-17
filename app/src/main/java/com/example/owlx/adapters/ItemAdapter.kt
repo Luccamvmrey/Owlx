@@ -1,6 +1,7 @@
 package com.example.owlx.adapters
 
 import android.content.Context
+import android.location.Location
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,15 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.owlx.R
+import com.example.owlx.firebaseUtil.getUserFromLoggedUser
+import com.example.owlx.firebaseUtil.getUserObjectFromUserId
 import com.example.owlx.models.product.Product
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 
-class ItemAdapter(private val context: Context, private val items: ArrayList<Product>):
+class ItemAdapter(private val context: Context, private val items: ArrayList<Product>,
+                  private var onItemClicked: (product: Product) -> Unit):
     RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -48,6 +54,39 @@ class ItemAdapter(private val context: Context, private val items: ArrayList<Pro
         holder.tvProductPrice.text = item.price.toString()
         Picasso.get().load(item.imageUri).rotate(90.0F).into(holder.ivProductImage)
 
+        getDistance(item) { distance ->
+            val distanceText = if (distance < 100.0) {
+                String.format("%.2f mt(s)", distance)
+            } else {
+                String.format("%.2f km(s)", distance / 1000)
+            }
+
+            holder.tvProductDistance.text = distanceText
+        }
+
+        holder.cardView.setOnClickListener {
+            onItemClicked(item)
+        }
+    }
+
+    private fun getDistance(product: Product, callback: (distance: Float) -> Unit) {
+        val db = Firebase.firestore
+
+        getUserObjectFromUserId(db, product.userId!!) { ownerUser ->
+            getUserFromLoggedUser(db) { loggedUser, _ ->
+                val buyerLocation = Location("buyer")
+                buyerLocation.latitude = loggedUser.coordinates?.latitude!!
+                buyerLocation.longitude = loggedUser.coordinates?.longitude!!
+
+                val sellerLocation = Location("seller")
+                sellerLocation.latitude = ownerUser.coordinates?.latitude!!
+                sellerLocation.longitude = ownerUser.coordinates?.longitude!!
+
+                val distance = buyerLocation.distanceTo(sellerLocation)
+
+                callback(distance)
+            }
+        }
     }
 
     override fun getItemCount(): Int {

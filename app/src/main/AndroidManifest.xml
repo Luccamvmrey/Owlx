@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -17,41 +17,46 @@
         android:theme="@style/Theme.Owlx"
         tools:targetApi="31">
         <activity
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            android:name=".ProductActivity"
+            android:exported="false"
+            android:label="@string/title_activity_product"
+            android:theme="@style/Theme.Owlx.NoActionBar" />
+        <activity
             android:name=".AddProductActivity"
-            android:exported="false" />
-        <activity
+            android:exported="false"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".UserPageActivity"
-            android:exported="false" />
-        <activity
+            android:exported="false"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".login.ForgotPasswordActivity"
-            android:exported="false" />
-        <activity
+            android:exported="false"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".HomePageActivity"
-            android:exported="false" />
-        <activity
+            android:exported="false"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".login.SigninActivity"
-            android:exported="false" />
-        <activity
+            android:exported="false"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".login.LoginActivity"
             android:exported="false"
-            android:label="Login" />
-        <activity
+            android:label="Login"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

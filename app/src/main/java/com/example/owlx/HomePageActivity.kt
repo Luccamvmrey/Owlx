@@ -33,8 +33,6 @@ class HomePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
-
-
         //Floating Button
         val fab: FloatingActionButton = findViewById(R.id.fab)
 
@@ -49,7 +47,20 @@ class HomePageActivity : AppCompatActivity() {
             recyclerViewItems.layoutManager = LinearLayoutManager(this)
 
             //Initializes Adapter class, passes prodList as parameter
-            val itemAdapter = ItemAdapter(this, prodList)
+            val itemAdapter = ItemAdapter(this, prodList) { product ->
+
+                val bundle = Bundle()
+                bundle.putString("userId", product.userId)
+                bundle.putString("productName", product.name)
+                bundle.putString("productPrice", product.price.toString())
+                bundle.putString("productDescription", product.description)
+                bundle.putString("productImage", product.imageUri)
+
+                val intent = Intent(this, ProductActivity::class.java)
+                intent.putExtras(bundle)
+
+                startActivity(intent)
+            }
 
             //Inflates items
             recyclerViewItems.adapter = itemAdapter

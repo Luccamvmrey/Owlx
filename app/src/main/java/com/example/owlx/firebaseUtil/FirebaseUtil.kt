@@ -35,6 +35,16 @@ fun getUserRefFromUserId(db: FirebaseFirestore, callback: (user: User, userRef: 
     }
 }
 
+fun getUserObjectFromUserId(db: FirebaseFirestore, userId: String, callback: (user: User) -> Unit) {
+    db.collection("users").document(userId)
+        .get()
+        .addOnSuccessListener { doc ->
+            val user = doc.toObject(User::class.java)
+
+            callback(user!!)
+        }
+}
+
 fun getUriFromUploadedImage(imageUri: Uri, storage: FirebaseStorage, callback: (downloadUri: Uri) -> Unit) {
     val storageRef = storage.reference
     val productImageRef = storageRef.child("images/${imageUri.lastPathSegment}")
