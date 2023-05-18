@@ -104,3 +104,36 @@ fun addProductToDatabase(db: FirebaseFirestore, storage: FirebaseStorage, conten
         }
     }
 }
+
+fun getProductId(db: FirebaseFirestore, prodName: String, callback: (prodId: String) -> Unit) {
+    getUserFromLoggedUser(db) { _, userId ->
+        db.collection("products")
+            .whereEqualTo("userId", userId)
+            .get()
+            .addOnSuccessListener { sp ->
+                sp.forEach { doc ->
+                    if (doc.data["name"] == prodName) {
+                        val prodId = doc.id
+
+                        callback(prodId)
+                    }
+                }
+            }
+    }
+}
+
+fun updateDatabaseProduct(db: FirebaseFirestore, oldName: String, newName: String, newPrice: Double,
+                          newDescription: String, callback: () -> Unit) {
+    getProductId(db, oldName) { prodId ->
+        db.collection("products").document(prodId)
+            .update(
+                "name", newName,
+                "price", newPrice,
+                "description", newDescription
+            )
+            .addOnSuccessListener {
+                callback()
+            }
+    }
+}
+

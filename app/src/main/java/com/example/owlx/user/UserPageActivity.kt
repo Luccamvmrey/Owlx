@@ -1,4 +1,4 @@
-package com.example.owlx
+package com.example.owlx.user
 
 import android.Manifest
 import android.content.ContentValues.TAG
@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.example.owlx.R
 import com.example.owlx.firebaseUtil.getUserFromLoggedUser
 import com.example.owlx.firebaseUtil.getUserRefFromUserId
 import com.example.owlx.models.user.Coordinates
@@ -61,7 +62,8 @@ class UserPageActivity : AppCompatActivity() {
             tvEmail.text = user.email
 
             if (user.coordinates != null) {
-                val coordinatesText = getString(R.string.localization,
+                val coordinatesText = getString(
+                    R.string.localization,
                     user.coordinates!!.longitude.toString(),
                     user.coordinates!!.latitude.toString())
 
@@ -99,7 +101,10 @@ class UserPageActivity : AppCompatActivity() {
                                 if (user.coordinates != null) {
 
                                     //Refreshes activity
-                                    recreate()
+                                    finish()
+                                    overridePendingTransition(0,0)
+                                    startActivity(intent)
+                                    overridePendingTransition(0,0)
                                 }
 
                                 Toast.makeText(this,

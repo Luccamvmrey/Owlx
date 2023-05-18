@@ -17,17 +17,23 @@
         android:theme="@style/Theme.Owlx"
         tools:targetApi="31">
         <activity
-            android:name=".ProductActivity"
+            android:name=".product.MyProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".product.MyProductsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".product.ProductActivity"
             android:exported="false"
             android:label="@string/title_activity_product"
             android:theme="@style/Theme.Owlx.NoActionBar" />
         <activity
-            android:name=".AddProductActivity"
+            android:name=".product.AddProductActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".UserPageActivity"
+            android:name=".user.UserPageActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />

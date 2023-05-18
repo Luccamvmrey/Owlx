@@ -1,4 +1,4 @@
-package com.example.owlx
+package com.example.owlx.product
 
 import android.content.Intent
 import android.net.Uri
@@ -9,6 +9,8 @@ import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import com.example.owlx.HomePageActivity
+import com.example.owlx.R
 import com.example.owlx.firebaseUtil.addProductToDatabase
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -85,7 +87,7 @@ class AddProductActivity : AppCompatActivity() {
         val description: String = descriptionInput?.text.toString()
 
         //Checks if any of the fields are empty
-        if (name.isEmpty() || price.isNaN() || description.isEmpty() || imageUri == null) {
+        if (name.isEmpty() || price.isNaN() || price == 0.0 || description.isEmpty() || imageUri == null) {
             Toast.makeText(
                 this,
                 "Um ou mais campos ficaram vazios!", Toast.LENGTH_LONG

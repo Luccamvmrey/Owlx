@@ -9,17 +9,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.owlx.R
 import com.example.owlx.firebaseUtil.getUserFromLoggedUser
 import com.example.owlx.firebaseUtil.getUserObjectFromUserId
 import com.example.owlx.models.product.Product
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.squareup.picasso.Picasso
 
-class ItemAdapter(private val context: Context, private val items: ArrayList<Product>,
-                  private var onItemClicked: (product: Product) -> Unit):
-    RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
+class ItemAdapterProductsPage(private val context: Context, private val items: ArrayList<Product>,
+                              private var onItemClicked: (product: Product) -> Unit):
+    RecyclerView.Adapter<ItemAdapterProductsPage.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val cardView: CardView
@@ -40,7 +40,7 @@ class ItemAdapter(private val context: Context, private val items: ArrayList<Pro
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(context).inflate(
-                R.layout.item_custom_row,
+                R.layout.item_custom_row_products,
                 parent,
                 false
             )
@@ -51,14 +51,14 @@ class ItemAdapter(private val context: Context, private val items: ArrayList<Pro
         val item = items[position]
 
         holder.tvProductName.text = item.name
-        holder.tvProductPrice.text = item.price.toString()
-        Picasso.get().load(item.imageUri).rotate(90.0F).into(holder.ivProductImage)
+        holder.tvProductPrice.text = String.format("R$ %.2f", item.price)
+        Glide.with(context).load(item.imageUri).into(holder.ivProductImage)
 
         getDistance(item) { distance ->
             val distanceText = if (distance < 100.0) {
                 String.format("%.2f mt(s)", distance)
             } else {
-                String.format("%.2f km(s)", distance / 1000)
+                String.format("%.1f km(s)", distance / 1000)
             }
 
             holder.tvProductDistance.text = distanceText

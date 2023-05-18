@@ -1,4 +1,4 @@
-package com.example.owlx
+package com.example.owlx.product
 
 import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +7,8 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+import com.example.owlx.R
 
 class ProductActivity : AppCompatActivity() {
 
@@ -51,8 +52,8 @@ class ProductActivity : AppCompatActivity() {
         ivProductImage = findViewById(R.id.product_image)
 
         tvProductName?.text = prodName
-        tvProductPrice?.text = prodPrice
+        tvProductPrice?.text = String.format("R$ %.2f", prodPrice?.toFloat())
         tvProductDescription?.text = prodDescription
-        Picasso.get().load(prodImageUrl).rotate(90F).into(ivProductImage)
+        Glide.with(this).load(prodImageUrl).into(ivProductImage!!)
     }
 }

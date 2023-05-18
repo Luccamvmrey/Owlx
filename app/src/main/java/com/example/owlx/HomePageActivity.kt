@@ -3,15 +3,21 @@ package com.example.owlx
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.owlx.adapters.ItemAdapter
+import com.example.owlx.adapters.ItemAdapterProductsPage
 import com.example.owlx.login.LoginActivity
 import com.example.owlx.models.product.Product
+import com.example.owlx.product.AddProductActivity
+import com.example.owlx.product.MyProductsActivity
+import com.example.owlx.product.ProductActivity
+import com.example.owlx.user.UserPageActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -47,7 +53,7 @@ class HomePageActivity : AppCompatActivity() {
             recyclerViewItems.layoutManager = LinearLayoutManager(this)
 
             //Initializes Adapter class, passes prodList as parameter
-            val itemAdapter = ItemAdapter(this, prodList) { product ->
+            val itemAdapterProductsPage = ItemAdapterProductsPage(this, prodList) { product ->
 
                 val bundle = Bundle()
                 bundle.putString("userId", product.userId)
@@ -63,7 +69,7 @@ class HomePageActivity : AppCompatActivity() {
             }
 
             //Inflates items
-            recyclerViewItems.adapter = itemAdapter
+            recyclerViewItems.adapter = itemAdapterProductsPage
         }
 
         //Drawer logic
@@ -81,9 +87,9 @@ class HomePageActivity : AppCompatActivity() {
 
             when (it.itemId) {
                 //This will all be replaced eventually
-                R.id.nav_home -> Toast.makeText(applicationContext, "Home clicked", Toast.LENGTH_SHORT).show()
                 R.id.nav_settings -> Toast.makeText(applicationContext, "Settings clicked", Toast.LENGTH_SHORT).show()
                 R.id.nav_profile -> getProfilePage()
+                R.id.nav_my_products -> getMyProductsPage()
                 R.id.nav_logout -> logoutUser()
                 R.id.nav_message -> Toast.makeText(applicationContext, "Messages clicked", Toast.LENGTH_SHORT).show()
             }
@@ -120,6 +126,12 @@ class HomePageActivity : AppCompatActivity() {
                         }
                     }
             }
+            .addOnFailureListener {
+                Toast.makeText(this,
+                "Falha no carregamento de produtos!\nVerifique sua rede e tente novamente!", Toast.LENGTH_LONG
+                )
+                    .show()
+            }
     }
 
     //Add product page
@@ -139,16 +151,23 @@ class HomePageActivity : AppCompatActivity() {
 
     private fun logoutUser() {
         //Logs user out
-        FirebaseAuth.getInstance().signOut()
+        auth.signOut()
 
         //Redirects to login page
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }, 1000)
     }
 
     private fun getProfilePage() {
         val intent = Intent(this, UserPageActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun getMyProductsPage() {
+        val intent = Intent(this, MyProductsActivity::class.java)
         startActivity(intent)
     }
 }
