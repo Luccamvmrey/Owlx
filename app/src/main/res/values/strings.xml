@@ -45,4 +45,5 @@
     <string name="buy_btn">Negociar</string>
     <string name="update_btn">Atualizar</string>
     <string name="my_products">Meus Produtos</string>
+    <string name="delete">Deletar</string>
 </resources>

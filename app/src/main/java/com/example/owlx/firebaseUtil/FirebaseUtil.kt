@@ -137,3 +137,13 @@ fun updateDatabaseProduct(db: FirebaseFirestore, oldName: String, newName: Strin
     }
 }
 
+fun deleteDatabaseProduct(db: FirebaseFirestore, prodName: String, callback: () -> Unit) {
+    getProductId(db, prodName) { prodId ->
+        db.collection("products").document(prodId)
+            .delete()
+            .addOnSuccessListener {
+                callback()
+            }
+    }
+}
+

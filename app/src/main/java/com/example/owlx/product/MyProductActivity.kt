@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.owlx.R
+import com.example.owlx.firebaseUtil.deleteDatabaseProduct
 import com.example.owlx.firebaseUtil.updateDatabaseProduct
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -19,6 +20,7 @@ class MyProductActivity : AppCompatActivity() {
     private var priceInput: EditText? = null
     private var descriptionInput: EditText? = null
     private var updateProductBtn: Button? = null
+    private var deleteProductBtn: Button? = null
 
     private var ivSelectImage: ImageView? = null
 
@@ -52,6 +54,12 @@ class MyProductActivity : AppCompatActivity() {
         updateProductBtn?.setOnClickListener {
             updateProduct(productName)
         }
+
+        //Delete product
+        deleteProductBtn = findViewById(R.id.delete_product_btn)
+        deleteProductBtn?.setOnClickListener {
+            deleteProduct(productName)
+        }
     }
 
     //Updates product
@@ -82,6 +90,20 @@ class MyProductActivity : AppCompatActivity() {
         updateDatabaseProduct(db, productName!!, name, price, description) {
             Toast.makeText(this,
             "Produto atualizado com sucesso!\nRedirecionando para página de produtos", Toast.LENGTH_SHORT
+            )
+                .show()
+
+            finish()
+        }
+    }
+
+    private fun deleteProduct(productName: String?) {
+        //Initializes firestore instance
+        val db = Firebase.firestore
+
+        deleteDatabaseProduct(db, productName!!) {
+            Toast.makeText(this,
+                "Produto apagado com sucesso!\nRedirecionando para página de produtos", Toast.LENGTH_SHORT
             )
                 .show()
 

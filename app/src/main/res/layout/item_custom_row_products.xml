@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     tools:text="Nome do Produto"
                     android:textSize="18sp"
-                    android:textAlignment="center"
+                    android:paddingStart="8dp"
                     android:padding="4dp"
                     android:background="@drawable/white_border"
                     android:textColor="@color/white" />
